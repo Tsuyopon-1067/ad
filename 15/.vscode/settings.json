@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.tex": "latex",
+        "*.md": "markdown",
+        "stdio.h": "c"
+    }
+}

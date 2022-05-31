@@ -1,0 +1,104 @@
+class MyHashC {
+    Entry[] table;
+    int elements;
+
+    MyHashC(int size){
+        table = new Entry[size];
+        for(int i = 0;i < size; i++){
+            table[i] = null;
+        }
+        elements = 0;
+        System.out.println("wakadayo");
+    }
+
+    public int hash(String key){
+        int r = 0;
+        // your code
+        for(int i=0; i<key.length(); i++) {
+            r += key.charAt(i);
+        }
+        return r % table.length;
+    }
+
+    private static class Entry{
+        MyKeyword keyword;
+        Entry next;
+        Entry(MyKeyword keyword){
+            this.keyword = keyword;
+        }
+    }
+
+    public void insert(MyKeyword k){
+        Entry newEntry = new Entry(k);
+        int h = hash(k.getKey());
+        newEntry.next = table[h];
+        table[h] = newEntry;
+        elements++;
+        return;
+    }
+
+    public MyKeyword search(String key){
+        int h = hash(key);
+        Entry p = table[h];
+        while(p != null) {
+            if(key.equals(p.keyword.getKey())) {
+                return p.keyword;
+            }
+            p = p.next;
+        }
+        return null;
+    }
+
+    public MyKeyword delete(String key){
+        int h = hash(key);
+        Entry p = table[h];
+        if(p == null) return null;
+        if(key.equals(p.keyword.getKey())) {
+            table[h] = p.next;
+            elements--;
+            return p.keyword;
+        }else {
+            Entry q = table[h];
+            p = q.next;
+            while(p != null) {
+                p = q.next;
+                if(key.equals(p.keyword.getKey())) {
+                    q.next = p.next;
+                    elements--;
+                    return p.keyword;
+                }
+                q = q.next;
+            }
+        }
+        return null;
+    }
+
+    public String toString(){
+        String str = "";
+        boolean pef=false;
+        boolean  ef=false;
+
+        str = "table[0] -- [" + (table.length - 1) + "]\n";
+        str = str + "=============================\n";
+        for(int i = 0;i < table.length; i++){
+            if (table[i] == null) {
+                ef = true;
+                if (pef == false){
+                    str = str + "   :   \n";
+                }
+            }else{
+                ef = false;
+                str = str + "table[" + i + "]";
+                Entry t = table[i];
+                while(t != null){
+                    str = str + "->(" + t.keyword + ") ";
+                    t = t.next;
+                }
+                str = str + "\n";
+            }
+            pef = ef;
+        }
+        str = str + "=============================\n";
+        return str;
+    }
+}
